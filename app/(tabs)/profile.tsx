@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, ScrollView,
 import { useAuth } from '@/hooks/useAuth';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Car, LogOut, User, CreditCard as Edit2, Mail, CircleCheck as CheckCircle } from 'lucide-react-native';
+import { navigate } from 'expo-router/build/global-state/routing';
 
 export default function ProfileScreen() {
   const { user, logout, updateUser } = useAuth();
@@ -160,7 +161,19 @@ export default function ProfileScreen() {
         
         <TouchableOpacity 
           style={styles.logoutButton}
-          onPress={logout}
+          onPress={()=>{
+            Alert.alert(
+              'Logout',
+              'Are you sure you want to logout?',
+              [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'Logout', onPress: ()=>{
+                  navigate('/login');
+                  logout();
+                }, style: 'destructive' }
+              ]
+            );
+          }}
         >
           <LogOut size={20} color="#FFFFFF" style={styles.logoutIcon} />
           <Text style={styles.logoutButtonText}>Logout</Text>
